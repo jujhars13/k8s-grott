@@ -71,10 +71,10 @@ Kubernetest manifests for the [Grott](https://github.com/johanmeijer/grott) prox
 
 ```bash
 # decrypting
-sops --pgp "953D50B7269F6802FA1DBE30F680EB1BF79164AA" decrypt deploy/kubernetes/base/grott-configmap.yaml.enc > deploy/kubernetes/base/grott-configmap.yaml
+sops --decrypt deploy/kubernetes/base/grott-configmap.enc.yaml --output > deploy/kubernetes/base/grott-configmap.yaml
 
 ## encrypting
-sops --pgp "953D50B7269F6802FA1DBE30F680EB1BF79164AA" --encrypt deploy/kubernetes/base/grott-configmap.yaml > deploy/kubernetes/base/grott-configmap.enc.yaml
+sops --encrypt deploy/kubernetes/base/grott-configmap.yaml > deploy/kubernetes/base/grott-configmap.enc.yaml
 
 ```
 
