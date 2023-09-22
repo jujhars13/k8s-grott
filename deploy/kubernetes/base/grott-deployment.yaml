@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grott
+  labels:
+    app.kubernetes.io/component: grott
+
+spec:
+  selector:
+    matchLabels:
+      app: grott
+  replicas: 1
+  minReadySeconds: 7
+  strategy:
+    # indicate which strategy we want for rolling update
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 1
+
+  # only keep last n revisions in history
+  revisionHistoryLimit: 8
+
+  template:
+    metadata:
+      labels:
+        app: grott
+        app.kubernetes.io/component: grott
+
+    spec:
+      serviceAccountName: sa-grott
+      restartPolicy: Always
+
+      containers:
+        - name: grott
+          image: ledidobe/grott:2.20.3
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: env-app-one
+          ports:
+            - containerPort: 5678
+              name: "http"
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 5729
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            failureThreshold: 5
+          livenessProbe:
+            tcpSocket:
+              port: 5729
+            initialDelaySeconds: 5
+            periodSeconds: 30
+            failureThreshold: 5
