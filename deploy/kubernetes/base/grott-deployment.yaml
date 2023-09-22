@@ -32,26 +32,38 @@ spec:
       serviceAccountName: sa-grott
       restartPolicy: Always
 
+      volumes:
+        - name: grott-ini-file
+          configMap:
+            # Provide the name of the ConfigMap containing the files you want
+            # to add to the container
+            name: grott-ini
+            defaultMode: 420
+            items:
+              - key: grott.ini
+                path: grott.ini
+
       containers:
         - name: grott
-          image: ledidobe/grott:2.20.3
+          image: ledidobe/grott:2.8.2
           imagePullPolicy: Always
-          envFrom:
-            - configMapRef:
-                name: env-app-one
+          volumeMounts:
+            - name: grott-ini-file
+              mountPath: /app/grott.ini
+              subPath: grott.ini
           ports:
-            - containerPort: 5678
-              name: "http"
+            - containerPort: 5279
+              name: "grott-tcp"
               protocol: TCP
-          readinessProbe:
-            tcpSocket:
-              port: 5729
-            initialDelaySeconds: 5
-            periodSeconds: 30
-            failureThreshold: 5
-          livenessProbe:
-            tcpSocket:
-              port: 5729
-            initialDelaySeconds: 5
-            periodSeconds: 30
-            failureThreshold: 5
+          # readinessProbe:
+          #   tcpSocket:
+          #     port: 5729
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 30
+          #   failureThreshold: 5
+          # livenessProbe:
+          #   tcpSocket:
+          #     port: 5729
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 30
+          #   failureThreshold: 5

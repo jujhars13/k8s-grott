@@ -55,16 +55,6 @@ Kubernetest manifests for the [Grott](https://github.com/johanmeijer/grott) prox
                                                     └─────────────────────────┘
 ```
 
-## Building and deploying
-
-```bash
-# deploy application stack
-(ENVIRONMENT="production"
-    kubectl kustomize "deploy/kubernetes/${ENVIRONMENT}" | \
-    kubectl apply -f -)
-
-```
-
 ### Generate your own Grott.ini
 
 `grott.ini` contains various things you might want to keep secret. I've embedded my own in here but used [`mozilla sops`](https://github.com/getsops/sops) to keep it secret.
@@ -78,6 +68,27 @@ sops --encrypt deploy/kubernetes/base/grott-configmap.yaml > deploy/kubernetes/b
 
 ```
 
-To generate your own configmap.ini from your `grott.ini` then simply run this command:
+To generate your own `configmap.yaml` from your own [`grott.ini`](https://github.com/johanmeijer/grott/blob/master/examples/grott.ini) then simply run this command:
 
 `kubectl create configmap grott-ini --from-file=grott.ini --output="yaml" --dry-run=client >deploy/kubernetes/base/grott-configmap.yaml`
+
+## Building and deploying
+
+```bash
+# testing in kind
+kind create cluster
+
+(ENVIRONMENT="production"
+    kubectl kustomize "deploy/kubernetes/${ENVIRONMENT}" | \
+    kubectl apply -f -)
+
+kind delete cluster
+```
+
+```bash
+# deploy application stack
+(ENVIRONMENT="production"
+    kubectl kustomize "deploy/kubernetes/${ENVIRONMENT}" | \
+    kubectl apply -f -)
+
+```

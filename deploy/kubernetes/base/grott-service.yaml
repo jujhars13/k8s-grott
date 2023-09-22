@@ -4,7 +4,8 @@ kind: Service
 metadata:
   name: service-grott
 spec:
-  type: ClusterIP
+  # use a NodePort to expose tcp service externally, not a ClusterIp
+  type: NodePort
   ports:
     - port: 5279
       name: "grott-tcp"

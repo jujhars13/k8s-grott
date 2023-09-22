@@ -6,11 +6,11 @@ namespace: grott
 
 commonLabels:
   projectName: grott
+  app: grott
 
 resources:
-  # - namespace.yaml
-  # - service-account.yaml
+  - namespace.yaml
+  - service-account.yaml
   - grott-configmap.yaml
-  # - grott-deployment.yaml
-  # - grott-service.yaml
-  # - ingress.yaml
+  - grott-deployment.yaml
+  - grott-service.yaml
