@@ -7,7 +7,7 @@ spec:
   # use a NodePort to expose tcp service externally, not a ClusterIp
   type: NodePort
   ports:
-    - port: 5279
+    - port: 80
       name: "grott-tcp"
       targetPort: 5729
   selector:

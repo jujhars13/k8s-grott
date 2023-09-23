@@ -14,3 +14,4 @@ resources:
   - grott-configmap.yaml
   - grott-deployment.yaml
   - grott-service.yaml
+  - ingress.yaml
